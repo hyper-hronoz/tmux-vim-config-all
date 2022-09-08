@@ -1,5 +1,3 @@
-filetype off                  " required
-
 set number
 set cursorline
 set modifiable
@@ -9,6 +7,7 @@ set smarttab
 set tabstop=4
 set shiftwidth=4
 set nowrap
+set hlsearch
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -16,6 +15,9 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 let g:coc_disable_startup_warning = 1
+
+" wilder command mode menu dropdown
+Plugin 'gelguy/wilder.nvim'
 
 " Emmet
 Plugin 'mattn/emmet-vim'
@@ -43,7 +45,12 @@ Plugin 'scrooloose/nerdtree'
 " cuda
 " Plugin 'valloric/youcompleteme'
 " jush a theme
+Plugin 'xolox/vim-misc'
 Plugin 'joshdick/onedark.vim'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'xolox/vim-colorscheme-switcher'
+" Plugin 'jdkanani/vim-material-theme'
+" Plugin 'tyrannicaltoucan/vim-quantum'
 
 " auto close brackets
 Plugin 'raimondi/delimitmate'
@@ -57,6 +64,9 @@ Plugin 'sheerun/vim-polyglot'
 " coc.nvim complition
 Plugin 'neoclide/coc.nvim'
 " All of your Plugins must be added before the following line
+
+" file icons
+Plugin 'ryanoasis/vim-devicons'
 
 call vundle#end()            " required
 
@@ -87,7 +97,10 @@ augroup END
 
 " theme settings
 syntax on
+set background=dark
+let g:quantum_black=1
 colorscheme onedark
+let g:quantum_italics=1
 filetype plugin indent on    " required
 hi LineNr ctermfg=red
 
@@ -100,6 +113,7 @@ imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 " NOTE: There's always complete item selected by default, you may want to enable
 " no select by `"suggest.noselect": true` in your configuration file.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(1) :
@@ -128,3 +142,34 @@ vmap <C-c> "+yi<esc>
 vmap <C-x> "+c
 vmap <C-v> c<ESC>"+p<esc>
 imap <C-v> <ESC>"+pa<esc>
+
+" Wilder dropdown
+call wilder#setup({'modes': [':', '/', '?']})
+
+call wilder#set_option('pipeline', [
+        \   wilder#branch(
+      \     [
+        \       wilder#check({_, x -> empty(x)}),
+      \       wilder#history(),
+      \       wilder#result({
+      \         'draw': [{_, x -> ' ' . x}],
+      \       }),
+      \     ],
+      \     wilder#cmdline_pipeline(),
+      \     wilder#search_pipeline(),
+      \   ),
+      \ ])
+
+call wilder#set_option('renderer', wilder#popupmenu_renderer({
+      \ 'highlighter': wilder#basic_highlighter(),
+      \ }))
+
+call wilder#setup({
+      \ 'modes': [':', '/', '?'],
+      \ 'next_key': '<C-n>',
+      \ 'previous_key': '<C-p>',
+      \ 'accept_key': '<Tab>',
+      \ 'reject_key': '<>',
+      \ })
+
+
