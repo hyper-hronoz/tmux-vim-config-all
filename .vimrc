@@ -1,4 +1,5 @@
 set number
+set termguicolors
 set cursorline
 set modifiable
 set nocompatible              " be iMproved, required
@@ -45,12 +46,10 @@ Plugin 'scrooloose/nerdtree'
 " cuda
 " Plugin 'valloric/youcompleteme'
 " jush a theme
-Plugin 'xolox/vim-misc'
+" Plugin 'xolox/vim-misc'
 Plugin 'joshdick/onedark.vim'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'xolox/vim-colorscheme-switcher'
-" Plugin 'jdkanani/vim-material-theme'
-" Plugin 'tyrannicaltoucan/vim-quantum'
+" Plugin 'kaicataldo/material.vim', { 'branch': 'main' }
+" Plugin 'navarasu/onedark.nvim'
 
 " auto close brackets
 Plugin 'raimondi/delimitmate'
@@ -94,16 +93,6 @@ augroup BgHighlight
     autocmd WinEnter * set relativenumber
     autocmd WinLeave * set norelativenumber
 augroup END
-
-" theme settings
-syntax on
-set background=dark
-let g:quantum_black=1
-colorscheme onedark
-let g:quantum_italics=1
-filetype plugin indent on    " required
-hi LineNr ctermfg=red
-
 " Emmet settings
 let g:user_emmet_expandabbr_key='<Tab>'
 imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
@@ -172,4 +161,15 @@ call wilder#setup({
       \ 'reject_key': '<>',
       \ })
 
+" theme settings
+"
+syntax on
+
+let g:onedark_config = {
+    \ 'style': 'darker',
+\}
+
+" colorscheme material
+colorscheme onedark
+filetype plugin indent on    " required
 
