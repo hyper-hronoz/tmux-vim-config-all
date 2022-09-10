@@ -16,6 +16,12 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 let g:coc_disable_startup_warning = 1
+Plugin 'roxma/vim-hug-neovim-rpc'
+" Install this plugin
+Plugin 'roxma/nvim-yarp', { 'do': 'pip install -r requirements.txt' }
+
+" finder 
+Plugin 'damage220/vim-finder'
 
 " wilder command mode menu dropdown
 Plugin 'gelguy/wilder.nvim'
@@ -67,7 +73,12 @@ Plugin 'neoclide/coc.nvim'
 " file icons
 Plugin 'ryanoasis/vim-devicons'
 
+" fuzzy search
+Plugin 'junegunn/fzf'
+
 call vundle#end()            " required
+
+nnoremap <C-p> :FZF<Cr>
 
 " NERDTree
 let NERDTreeShowHidden=1
@@ -75,7 +86,6 @@ let NERDTreeShowHidden=1
 nnoremap <leader>n :NERDTreeFocus<CR>
 
 map <C-n> :call NERDTreeToggleAndRefresh()<CR>
-
 function NERDTreeToggleAndRefresh()
   :NERDTreeToggle
   if g:NERDTree.IsOpen()
@@ -135,19 +145,12 @@ imap <C-v> <ESC>"+pa<esc>
 " Wilder dropdown
 call wilder#setup({'modes': [':', '/', '?']})
 
-call wilder#set_option('pipeline', [
-        \   wilder#branch(
-      \     [
-        \       wilder#check({_, x -> empty(x)}),
-      \       wilder#history(),
-      \       wilder#result({
-      \         'draw': [{_, x -> ' ' . x}],
-      \       }),
-      \     ],
-      \     wilder#cmdline_pipeline(),
-      \     wilder#search_pipeline(),
-      \   ),
-      \ ])
+" call wilder#set_option('pipeline', [
+"       \   wilder#branch(
+"       \     [
+"       \     ],
+"       \   ),
+"       \ ])
 
 call wilder#set_option('renderer', wilder#popupmenu_renderer({
       \ 'highlighter': wilder#basic_highlighter(),
@@ -161,15 +164,37 @@ call wilder#setup({
       \ 'reject_key': '<>',
       \ })
 
-" theme settings
-"
-syntax on
+call wilder#set_option('renderer', wilder#popupmenu_renderer(wilder#popupmenu_border_theme({
+      \ 'highlights': {
+      \   'border': 'Normal',
+      \ },
+      \ 'border': 'rounded',
+      \ })))
 
+call wilder#setup({'modes': [':', '/', '?']})
+
+call wilder#set_option('pipeline', [
+      \   wilder#branch(
+      \     wilder#cmdline_pipeline({
+      \       'fuzzy': 1,
+      \       'set_pcre2_pattern': 1,
+      \     }),
+      \     wilder#python_search_pipeline({
+      \       'pattern': 'fuzzy',
+      \     }),
+      \   ),
+      \ ])
+
+let s:highlighters = [
+        \ wilder#pcre2_highlighter(),
+        \ wilder#basic_highlighter(),
+        \ ]
+
+" theme settings
+syntax on
 let g:onedark_config = {
     \ 'style': 'darker',
 \}
-
-" colorscheme material
 colorscheme onedark
 filetype plugin indent on    " required
 
