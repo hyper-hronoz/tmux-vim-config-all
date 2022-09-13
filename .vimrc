@@ -16,6 +16,11 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 let g:coc_disable_startup_warning = 1
+
+" airline line at the bottom of the vim
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
 Plugin 'roxma/vim-hug-neovim-rpc'
 " Install this plugin
 Plugin 'roxma/nvim-yarp', { 'do': 'pip install -r requirements.txt' }
