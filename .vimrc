@@ -1,3 +1,5 @@
+let g:CommandTPreferredImplementation='lua'
+
 set number
 set termguicolors
 set cursorline
@@ -13,11 +15,9 @@ set hlsearch
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-" let g:coc_disable_startup_warning = 1
 
-" defx something like neerdtree
-Plugin 'shougo/defx.nvim'
+" alternatively, pass a path where Vundle should install plugins
+let g:coc_disable_startup_warning = 1
 
 " airline line at the bottom of the vim
 Plugin 'vim-airline/vim-airline'
@@ -29,6 +29,9 @@ Plugin 'roxma/nvim-yarp', { 'do': 'pip install -r requirements.txt' }
 
 " finder 
 Plugin 'damage220/vim-finder'
+
+" treesitter highlights
+Plugin 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " wilder command mode menu dropdown
 Plugin 'gelguy/wilder.nvim'
@@ -45,7 +48,6 @@ Plugin 'tpope/vim-fugitive'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'christoomey/vim-tmux-navigator'
 " The sparkup vim script is in a subdirectory of this repo called vim.
 " Pass the path to set the runtimepath properly.
@@ -71,10 +73,10 @@ Plugin 'raimondi/delimitmate'
 Plugin 'tpope/vim-commentary'
 
 " all languages syntax support
-Plugin 'sheerun/vim-polyglot'
+" Plugin 'sheerun/vim-polyglot'
 
 " coc.nvim complition
-" Plugin 'neoclide/coc.nvim'
+Plugin 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
 " All of your Plugins must be added before the following line
 
 " file icons
@@ -110,6 +112,7 @@ augroup BgHighlight
     autocmd WinEnter * set relativenumber
     autocmd WinLeave * set norelativenumber
 augroup END
+
 " Emmet settings
 let g:user_emmet_expandabbr_key='<Tab>'
 imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
@@ -151,13 +154,6 @@ imap <C-v> <ESC>"+pa<esc>
 
 " Wilder dropdown
 call wilder#setup({'modes': [':', '/', '?']})
-
-" call wilder#set_option('pipeline', [
-"       \   wilder#branch(
-"       \     [
-"       \     ],
-"       \   ),
-"       \ ])
 
 call wilder#set_option('renderer', wilder#popupmenu_renderer({
       \ 'highlighter': wilder#basic_highlighter(),
@@ -210,82 +206,4 @@ noremap <silent> <C-h> :vertical resize -10<CR>
 noremap <silent> <C-l> :vertical resize +10<CR>
 noremap <silent> <C-j> :resize -10<CR>
 noremap <silent> <C-k> :resize +10<CR>
-
-" defx
-call defx#custom#option('_', {
-      \ 'winwidth': 30,
-      \ 'split': 'vertical',
-      \ 'show_ignored_files': 0,
-      \ 'buffer_name': 'defxplorer',
-      \ 'toggle': 1,
-      \ 'resume': 1
-      \ })
-
-" Toggle Defx using Ctrl + Space
-map <C-space> :Defx<CR>
-
-autocmd FileType defx call s:defx_my_settings()
-function! s:defx_my_settings() abort
-  " Define mappings
-  nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-  nnoremap <silent><buffer><expr> c
-  \ defx#do_action('copy')
-  nnoremap <silent><buffer><expr> m
-  \ defx#do_action('move')
-  nnoremap <silent><buffer><expr> p
-  \ defx#do_action('paste')
-  nnoremap <silent><buffer><expr> l
-  \ defx#do_action('open')
-  nnoremap <silent><buffer><expr> E
-  \ defx#do_action('open', 'vsplit')
-  nnoremap <silent><buffer><expr> P
-  \ defx#do_action('open', 'pedit')
-  nnoremap <silent><buffer><expr> o
-  \ defx#do_action('open_or_close_tree')
-  nnoremap <silent><buffer><expr> K
-  \ defx#do_action('new_directory')
-  nnoremap <silent><buffer><expr> N
-  \ defx#do_action('new_file')
-  nnoremap <silent><buffer><expr> M
-  \ defx#do_action('new_multiple_files')
-  nnoremap <silent><buffer><expr> C
-  \ defx#do_action('toggle_columns',
-  \                'mark:indent:icon:filename:type:size:time')
-  nnoremap <silent><buffer><expr> S
-  \ defx#do_action('toggle_sort', 'time')
-  nnoremap <silent><buffer><expr> d
-  \ defx#do_action('remove')
-  nnoremap <silent><buffer><expr> r
-  \ defx#do_action('rename')
-  nnoremap <silent><buffer><expr> !
-  \ defx#do_action('execute_command')
-  nnoremap <silent><buffer><expr> x
-  \ defx#do_action('execute_system')
-  nnoremap <silent><buffer><expr> yy
-  \ defx#do_action('yank_path')
-  nnoremap <silent><buffer><expr> .
-  \ defx#do_action('toggle_ignored_files')
-  nnoremap <silent><buffer><expr> ;
-  \ defx#do_action('repeat')
-  nnoremap <silent><buffer><expr> h
-  \ defx#do_action('cd', ['..'])
-  nnoremap <silent><buffer><expr> ~
-  \ defx#do_action('cd')
-  nnoremap <silent><buffer><expr> q
-  \ defx#do_action('quit')
-  nnoremap <silent><buffer><expr> <Space>
-  \ defx#do_action('toggle_select') . 'j'
-  nnoremap <silent><buffer><expr> *
-  \ defx#do_action('toggle_select_all')
-  nnoremap <silent><buffer><expr> j
-  \ line('.') == line('$') ? 'gg' : 'j'
-  nnoremap <silent><buffer><expr> k
-  \ line('.') == 1 ? 'G' : 'k'
-  nnoremap <silent><buffer><expr> <C-l>
-  \ defx#do_action('redraw')
-  nnoremap <silent><buffer><expr> <C-g>
-  \ defx#do_action('print')
-  nnoremap <silent><buffer><expr> cd
-  \ defx#do_action('change_vim_cwd')
-endfunction 
 
