@@ -17,6 +17,9 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 let g:coc_disable_startup_warning = 1
 
+" defx something like neerdtree
+Plugin 'shougo/defx.nvim'
+
 " airline line at the bottom of the vim
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
@@ -202,4 +205,10 @@ let g:onedark_config = {
 \}
 colorscheme onedark
 filetype plugin indent on    " required
+
+" vim windows resizing
+noremap <silent> <C-h> :vertical resize -10<CR>
+noremap <silent> <C-l> :vertical resize +10<CR>
+noremap <silent> <C-j> :resize -10<CR>
+noremap <silent> <C-k> :resize +10<CR>
 
