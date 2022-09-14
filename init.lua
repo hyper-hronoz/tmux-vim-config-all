@@ -39,10 +39,10 @@ local config = {
 
   mappings = {
     n = {
-      ["<C-]>h"] = { ":TmuxNavigateLeft<cr>", desc = "FUCK" , silent=true},
-      ["<C-]>j"] = { ":TmuxNavigateDown<cr>", desc = "FUCK", silent=true},
-      ["<C-]>k"] = { ":TmuxNavigateUp<cr>", desc = "FUCK", silent=true},
-      ["<C-]>l"] = { ":TmuxNavigateRight<cr>", desc = "FUCK", silent=true},
+      ["C-h"] = { ":TmuxNavigateLeft<cr>", desc = "FUCK"},
+      ["C-j"] = { ":TmuxNavigateDown<cr>", desc = "FUCK"},
+      ["C-k"] = { ":TmuxNavigateUp<cr>", desc = "FUCK"},
+      ["C-l"] = { ":TmuxNavigateRight<cr>", desc = "FUCK"},
       ["<leader>ff"] = { ":FZF<cr>", desc = "FUCK"},
     },
     t = {
