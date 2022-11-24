@@ -134,48 +134,15 @@ local config = {
 
         -- Configure plugins
         plugins = {
-                init = {
-                        -- You can disable default plugins as follows:
-                        { "fzy-lua-native" },
-                        {
-                                "gelguy/wilder.nvim",
-                                config = function()
-                                        local wilder = require "wilder"
-                                        wilder.setup { modes = { ":" } }
-                                        wilder.set_option("pipeline", {
-                                                wilder.branch(
-                                                        wilder.cmdline_pipeline {
-                                                                -- sets the language to use, 'vim' and 'python' are supported
-                                                                language = "vim",
-                                                                -- 0 turns off fuzzy matching
-                                                                -- 1 turns on fuzzy matching
-                                                                -- 2 partial fuzzy matching (match does not have to begin with the same first letter)
-                                                                fuzzy = 1,
-                                                        },
-                                                        wilder.python_search_pipeline {}
-                                                ),
-                                        })
-                                        wilder.set_option(
-                                                "renderer",
-                                                wilder.popupmenu_renderer(wilder.popupmenu_border_theme {
-                                                        highlights = {
-                                                                border = "Normal", -- highlight to use for the border
-                                                        },
-                                                        -- 'single', 'double', 'rounded' or 'solid'
-                                                        -- can also be a list of 8 characters, see :h wilder#popupmenu_border_theme() for more details
-                                                        border = "rounded",
-                                                })
-                                        )
-                                end,
-                        },
 
-                        -- We also support a key value style plugin definition similar to NvChad:
-                        -- ["ray-x/lsp_signature.nvim"] = {
-                        --   event = "BufRead",
-                        --   config = function()
-                        --     require("lsp_signature").setup()
-                        --   end,
-                        -- },
+                init = {
+                        ["hrsh7th/nvim-cmp"] = { keys = { ":", "/", "?" } },
+                        ["hrsh7th/cmp-cmdline"] = { after = "nvim-cmp" },
+                        {
+                                "hrsh7th/cmp-emoji",
+                                after = "nvim-cmp",
+                                config = function() astronvim.add_user_cmp_source "emoji" end,
+                        },
                 },
                 -- All other entries override the require("<key>").setup({...}) call for default plugins
                 ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
@@ -204,6 +171,27 @@ local config = {
                 packer = { -- overrides `require("packer").setup(...)`
                         compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
                 },
+                cmp = function(opts)
+                        local cmp = require "cmp"
+
+                        cmp.setup.cmdline({ "/", "?" }, {
+                                mapping = cmp.mapping.preset.cmdline(),
+                                sources = {
+                                        { name = "buffer" },
+                                },
+                        })
+
+                        cmp.setup.cmdline(":", {
+                                mapping = cmp.mapping.preset.cmdline(),
+                                sources = cmp.config.sources({
+                                        { name = "path" },
+                                }, {
+                                        { name = "cmdline" },
+                                }),
+                        })
+
+                        return opts
+                end,
         },
 
         -- LuaSnip Options
