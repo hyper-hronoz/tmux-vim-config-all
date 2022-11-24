@@ -144,31 +144,23 @@ local config = {
                                 config = function() astronvim.add_user_cmp_source "emoji" end,
                         },
                 },
-                -- All other entries override the require("<key>").setup({...}) call for default plugins
                 ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
-                        -- config variable is the default configuration table for the setup functino call
                         local null_ls = require "null-ls"
-                        -- Check supported formatters and linters
-                        -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
-                        -- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
                         config.sources = {
-                                -- Set a formatter that is manually installed
                                 null_ls.builtins.formatting.prettier,
                         }
-                        return config -- return final config table to use in require("null-ls").setup(config)
+                        return config
                 end,
-                treesitter = { -- overrides `require("treesitter").setup(...)`
+                treesitter = {
                         ensure_installed = { "lua" },
                 },
-                -- use mason-lspconfig to configure LSP installations
-                ["mason-lspconfig"] = { -- overrides `require("mason-lspconfig").setup(...)`
+                ["mason-lspconfig"] = {
                         ensure_installed = { "sumneko_lua" },
                 },
-                -- use mason-null-ls to install and setup configure null-ls sources
-                ["mason-null-ls"] = { -- overrides `require("mason-null-ls").setup(...)`
+                ["mason-null-ls"] = {
                         ensure_installed = { "stylua" },
                 },
-                packer = { -- overrides `require("packer").setup(...)`
+                packer = {
                         compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
                 },
                 cmp = function(opts)
