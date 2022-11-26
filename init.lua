@@ -73,6 +73,9 @@ local config = {
 
         -- Extend LSP configuration
         lsp = {
+                formatting = {
+                        format_on_save = false,
+                },
                 -- enable servers that you already have installed without mason
                 servers = {
                         -- "pyright"
@@ -135,6 +138,16 @@ local config = {
         -- Configure plugins
         plugins = {
 
+                ["neo-tree"] = {
+                        filesystem = {
+                                filtered_items = {
+                                        visible = true, -- This is what you want: If you set this to `true`, all "hide" just mean "dimmed out"
+                                        hide_dotfiles = false,
+                                        hide_gitignored = false,
+                                },
+                        },
+                },
+
                 init = {
                         ["hrsh7th/nvim-cmp"] = { keys = { ":", "/", "?" } },
                         ["hrsh7th/cmp-cmdline"] = { after = "nvim-cmp" },
@@ -144,13 +157,13 @@ local config = {
                                 config = function() astronvim.add_user_cmp_source "emoji" end,
                         },
                 },
-                ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
-                        local null_ls = require "null-ls"
-                        config.sources = {
-                                null_ls.builtins.formatting.prettier,
-                        }
-                        return config
-                end,
+                -- ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
+                --         local null_ls = require "null-ls"
+                --         config.sources = {
+                --                 null_ls.builtins.formatting.prettier,
+                --         }
+                --         return config
+                -- end,
                 treesitter = {
                         ensure_installed = { "lua" },
                 },
@@ -181,6 +194,8 @@ local config = {
                                         { name = "cmdline" },
                                 }),
                         })
+
+                        opts.mapping["<TAB>"] = cmp.mapping.confirm { select = false }
 
                         return opts
                 end,
