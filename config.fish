@@ -1,9 +1,19 @@
 ## Set values
 
+fzf_configure_bindings --history=\cu --directory=\co
+
+set -g fish_escape_delay_ms 10
+
+if status is-interactive
+and not set -q TMUX
+    exec tmux
+end
+
 ## my aliases
 alias l="ll"
 alias cls="clear"
 alias nv="nvim"
+alias google="google-chrome-stable"
 
 # Hide welcome message
 set fish_greeting
@@ -44,11 +54,6 @@ end
 #if status --is-interactive
 #   source ("/usr/bin/starship" init fish --print-full-init | psub)
 #end
-
-    if status is-interactive
-    and not set -q TMUX
-       exec tmux
-    end
 
 
 ## Advanced command-not-found hook

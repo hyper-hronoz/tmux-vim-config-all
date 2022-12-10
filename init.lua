@@ -1,4 +1,5 @@
 --              AstroNvim Configuration Table
+--
 -- All configuration changes should go inside of the table below
 
 -- You can think of a Lua "table" as a dictionary like data structure the
@@ -11,6 +12,9 @@ local config = {
                 opt = {
                         relativenumber = true, -- sets vim.opt.relativenumber
                         clipboard = "", -- Connection to the system clipboard
+                        tabstop = 4,
+                        shiftwidth = 4,
+                        showtabline = 4,
                 },
                 g = {
                         mapleader = " ", -- sets vim.g.mapleader
@@ -75,28 +79,35 @@ local config = {
         lsp = {
                 formatting = {
                         format_on_save = false,
+                        filter = function(client)
+                                if client.name == "clangd" then return client.name == "null-ls" end
+
+                                -- enable all other clients
+                                return true
+                        end,
                 },
                 -- enable servers that you already have installed without mason
                 servers = {
                         -- "pyright"
                 },
                 -- easily add or disable built in mappings added during LSP attaching
-                mappings = {
-                        n = {
-                                -- ["<leader>lf"] = false -- disable formatting keymap
-                        },
-                },
+                mappings = {},
                 -- add to the global LSP on_attach function
                 -- on_attach = function(client, bufnr)
                 -- end,
 
                 -- override the mason server-registration function
                 -- server_registration = function(server, opts)
-                --   require("lspconfig")[server].setup(opts)
+                --   require("lspconfig").setup(opts)
                 -- end,
 
                 -- Add overrides for LSP server settings, the keys are the name of the server
                 ["server-settings"] = {
+                        clangd = {
+                                capabilities = {
+                                        offsetEncoding = "utf-8",
+                                },
+                        },
                         -- example for addings schemas to yamlls
                         -- yamlls = { -- override table for require("lspconfig").yamlls.setup({...})
                         --   settings = {
@@ -120,19 +131,27 @@ local config = {
         mappings = {
                 -- first key is the mode
                 n = {
-                        -- second key is the lefthand side of the map
-                        -- mappings seen under group name "Buffer"
-                        ["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
-                        ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
-                        ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
-                        ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
-                        -- quick save
-                        -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
+                        ["<M-K>"] = { "<cmd>resize -15<CR>", desc = "Resize split up" },
+                        ["<M-J>"] = { "<cmd>resize +15<CR>", desc = "Resize split down" },
+                        ["<M-H>"] = { "<cmd>vertical resize -15<CR>", desc = "Resize split left" },
+                        ["<M-L>"] = { "<cmd>vertical resize +15<CR>", desc = "Resize split right" },
+
+                        ["<M-k>"] = { "<cmd>resize -2<CR>", desc = "Resize split up" },
+                        ["<M-j>"] = { "<cmd>resize +2<CR>", desc = "Resize split down" },
+                        ["<M-h>"] = { "<cmd>vertical resize -2<CR>", desc = "Resize split left" },
+                        ["<M-l>"] = { "<cmd>vertical resize +2<CR>", desc = "Resize split right" },
+                        --
+                        -- ["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
+                        -- ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
+                        -- ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
+                        -- ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
                 },
-                t = {
-                        -- setting a mapping to false will disable it
-                        -- ["<esc>"] = false,
-                },
+                -- t = {
+                --         ["<C-Up>"] = false,
+                --         ["<C-Down>"] = false,
+                --         ["<C-Left>"] = false,
+                --         ["<C-Right>"] = false,
+                -- },
         },
 
         -- Configure plugins
@@ -143,12 +162,24 @@ local config = {
                                 filtered_items = {
                                         visible = true, -- This is what you want: If you set this to `true`, all "hide" just mean "dimmed out"
                                         hide_dotfiles = false,
-                                        hide_gitignored = false,
+                                        hide_gitignored = true,
+                                },
+                        },
+                        event_handlers = {
+                                {
+                                        event = "vim_buffer_enter",
+                                        handler = function()
+                                                if vim.bo.filetype == "neo-tree" then
+                                                        vim.cmd "setlocal relativenumber"
+                                                        vim.cmd "setlocal nu rnu"
+                                                end
+                                        end,
                                 },
                         },
                 },
 
                 init = {
+                        {'RyanMillerC/better-vim-tmux-resizer'},
                         ["hrsh7th/nvim-cmp"] = { keys = { ":", "/", "?" } },
                         ["hrsh7th/cmp-cmdline"] = { after = "nvim-cmp" },
                         {
@@ -157,21 +188,11 @@ local config = {
                                 config = function() astronvim.add_user_cmp_source "emoji" end,
                         },
                 },
-                -- ["null-ls"] = function(config) -- overrides `require("null-ls").setup(config)`
-                --         local null_ls = require "null-ls"
-                --         config.sources = {
-                --                 null_ls.builtins.formatting.prettier,
-                --         }
-                --         return config
-                -- end,
                 treesitter = {
                         ensure_installed = { "lua" },
                 },
-                ["mason-lspconfig"] = {
-                        ensure_installed = { "sumneko_lua" },
-                },
-                ["mason-null-ls"] = {
-                        ensure_installed = { "stylua" },
+                ["mason-null-ls"] = { -- overrides `require("mason-null-ls").setup(...)`
+                        ensure_installed = { "clang_format" },
                 },
                 packer = {
                         compile_path = vim.fn.stdpath "data" .. "/packer_compiled.lua",
