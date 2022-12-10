@@ -15,6 +15,7 @@ local config = {
                         tabstop = 4,
                         shiftwidth = 4,
                         showtabline = 4,
+                        cursorcolumn = true,
                 },
                 g = {
                         mapleader = " ", -- sets vim.g.mapleader
@@ -131,27 +132,13 @@ local config = {
         mappings = {
                 -- first key is the mode
                 n = {
-                        ["<M-K>"] = { "<cmd>resize -15<CR>", desc = "Resize split up" },
-                        ["<M-J>"] = { "<cmd>resize +15<CR>", desc = "Resize split down" },
-                        ["<M-H>"] = { "<cmd>vertical resize -15<CR>", desc = "Resize split left" },
-                        ["<M-L>"] = { "<cmd>vertical resize +15<CR>", desc = "Resize split right" },
+                        ["<leader>bs"] = { "<cmd>SmartResizeMode<cr>", desc = "Resize mode" },
 
-                        ["<M-k>"] = { "<cmd>resize -2<CR>", desc = "Resize split up" },
-                        ["<M-j>"] = { "<cmd>resize +2<CR>", desc = "Resize split down" },
-                        ["<M-h>"] = { "<cmd>vertical resize -2<CR>", desc = "Resize split left" },
-                        ["<M-l>"] = { "<cmd>vertical resize +2<CR>", desc = "Resize split right" },
-                        --
-                        -- ["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
-                        -- ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
-                        -- ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
-                        -- ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
+                        ["<leader>bb"] = { "<cmd>tabnew<cr>", desc = "New tab" },
+                        ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
+                        ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
+                        ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
                 },
-                -- t = {
-                --         ["<C-Up>"] = false,
-                --         ["<C-Down>"] = false,
-                --         ["<C-Left>"] = false,
-                --         ["<C-Right>"] = false,
-                -- },
         },
 
         -- Configure plugins
@@ -179,6 +166,7 @@ local config = {
                 },
 
                 init = {
+                        {'ThePrimeagen/vim-be-good'},
                         {'RyanMillerC/better-vim-tmux-resizer'},
                         ["hrsh7th/nvim-cmp"] = { keys = { ":", "/", "?" } },
                         ["hrsh7th/cmp-cmdline"] = { after = "nvim-cmp" },
