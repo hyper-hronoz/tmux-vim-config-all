@@ -45,26 +45,25 @@ local config = {
         default_theme = {
                 -- Modify the color palette for the default theme
                 colors = {
-                        fg = "#abb2bf",
-                        bg = "#1e222a",
+                        bg = "#000000",
                 },
                 -- enable or disable highlighting for extra plugins
                 plugins = {
-                        aerial = true,
+                        aerial = false,
                         beacon = false,
-                        bufferline = true,
-                        dashboard = true,
-                        highlighturl = true,
+                        bufferline = false,
+                        dashboard = false,
+                        highlighturl = false,
                         hop = false,
-                        indent_blankline = true,
+                        indent_blankline = false,
                         lightspeed = false,
-                        ["neo-tree"] = true,
-                        notify = true,
+                        ["neo-tree"] = false,
+                        notify = false,
                         ["nvim-tree"] = false,
-                        ["nvim-web-devicons"] = true,
-                        rainbow = true,
+                        ["nvim-web-devicons"] = false,
+                        rainbow = false,
                         symbols_outline = false,
-                        telescope = true,
+                        telescope = false,
                         vimwiki = false,
                         ["which-key"] = true,
                 },
@@ -143,6 +142,57 @@ local config = {
 
         -- Configure plugins
         plugins = {
+                heirline = function(config)
+                        -- the first element of the default configuration table is the statusline
+                        config[1] = {
+                                -- set the fg/bg of the statusline
+                                hl = { bg = "#000000", fg = "#000000" },
+                                -- when adding the mode component, enable the mode text with padding to the left/right of it
+                                astronvim.status.component.mode { mode_text = { padding = { left = 1, right = 1 } } },
+                                -- add all the other components for the statusline
+                                astronvim.status.component.git_branch(),
+                                astronvim.status.component.file_info(),
+                                astronvim.status.component.git_diff(),
+                                astronvim.status.component.diagnostics(),
+                                astronvim.status.component.fill(),
+                                astronvim.status.component.macro_recording(),
+                                astronvim.status.component.fill(),
+                                astronvim.status.component.lsp(),
+                                astronvim.status.component.treesitter(),
+                                astronvim.status.component.nav(),
+                        }
+                        -- winbar
+                        config[2] = {
+                                fallthrough = false,
+                                -- if the current buffer matches the following buftype or filetype, disable the winbar
+                                {
+                                        condition = function()
+                                                return astronvim.status.condition.buffer_matches {
+                                                        buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
+                                                        filetype = { "NvimTree", "neo-tree", "dashboard", "Outline",
+                                                                "aerial" },
+                                                }
+                                        end,
+                                        init = function() vim.opt_local.winbar = nil end,
+                                },
+                                -- if the window is currently active, show the breadcrumbs
+                                {
+                                        condition = astronvim.status.condition.is_active,
+                                        astronvim.status.component.breadcrumbs { hl = { fg = "#000000",
+                                                bg = "#000000" } },
+                                },
+                                -- if the window is not currently active, show the file information
+                                {
+                                        astronvim.status.component.file_info {
+                                                file_icon = { hl = false },
+                                                hl = { fg = "#000000", bg = "#000000" },
+                                                surround = false,
+                                        },
+                                },
+                        }
+
+                        return config
+                end,
 
                 ["neo-tree"] = {
                         filesystem = {
@@ -166,8 +216,26 @@ local config = {
                 },
 
                 init = {
-                        {'ThePrimeagen/vim-be-good'},
-                        {'RyanMillerC/better-vim-tmux-resizer'},
+                        { "Mofiqul/dracula.nvim" },
+                        { "ThePrimeagen/vim-be-good" },
+                        {
+                                "xiyaowong/nvim-transparent",
+                                config = function()
+                                        require("transparent").setup {
+                                                -- enable = true, -- boolean: enable transparent
+                                                -- extra_groups = { -- table/string: additional groups that should be cleared
+                                                --         "BufferLineTabClose",
+                                                --         "BufferlineBufferSelected",
+                                                --         "BufferLineFill",
+                                                --         "BufferLineBackground",
+                                                --         "BufferLineSeparator",
+                                                --         "BufferLineIndicatorSelected",
+                                                -- },
+                                                -- exclude = {}, -- table: groups you don't want to clear
+                                        }
+                                end,
+                        },
+                        { "RyanMillerC/better-vim-tmux-resizer" },
                         ["hrsh7th/nvim-cmp"] = { keys = { ":", "/", "?" } },
                         ["hrsh7th/cmp-cmdline"] = { after = "nvim-cmp" },
                         {
