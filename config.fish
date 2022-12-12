@@ -6,7 +6,7 @@ set -g fish_escape_delay_ms 10
 
 if status is-interactive
 and not set -q TMUX
-#    exec tmux
+    exec tmux
 end
 
 ## my aliases

@@ -15,7 +15,8 @@ local config = {
                         tabstop = 4,
                         shiftwidth = 4,
                         showtabline = 4,
-                        cursorcolumn = true,
+                        cursorcolumn = false,
+                        cursorline = false,
                 },
                 g = {
                         mapleader = " ", -- sets vim.g.mapleader
