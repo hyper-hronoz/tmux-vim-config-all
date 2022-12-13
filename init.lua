@@ -46,7 +46,50 @@ local config = {
         default_theme = {
                 -- Modify the color palette for the default theme
                 colors = {
+                        fg = "#abb2bf",
                         bg = "#000000",
+                        black = "#000000", -- вот эта херня подсветка при переключениях
+                        black_1 = "#1f1f25",
+                        green = "#98c379",
+                        green_1 = "#89b06d",
+                        green_2 = "#95be76",
+                        white = "#dedede",
+                        white_1 = "#afb2bb",
+                        white_2 = "#c9c9c9",
+                        blue = "#ffffff",
+                        blue_1 = "#40d9ff",
+                        blue_2 = "#1b1f27",
+                        blue_3 = "#8094B4",
+                        blue_4 = "#90c7f3",
+                        orange = "#d19a66",
+                        orange_1 = "#ff9640",
+                        orange_2 = "#ff8800",
+                        yellow = "#e5c07b",
+                        yellow_1 = "#ebae34",
+                        yellow_2 = "#d1b071",
+                        red = "#e06c75",
+                        red_1 = "#ec5f67",
+                        red_2 = "#ffbba6",
+                        red_3 = "#cc626a",
+                        red_4 = "#d47d85",
+                        red_5 = "#e9989e",
+                        grey = "#5c6370",
+                        grey_1 = "#4b5263",
+                        grey_2 = "#777d86",
+                        grey_3 = "#282c34",
+                        grey_4 = "#000000",
+                        grey_5 = "#3e4452",
+                        grey_6 = "#3b4048",
+                        grey_7 = "#5c5c5c",
+                        grey_8 = "#252931",
+                        grey_9 = "#787e87",
+                        grey_10 = "#D3D3D3",
+                        gold = "#ffcc00",
+                        cyan = "#56b6c2",
+                        cyan_1 = "#88cbd4",
+                        purple = "#c678dd",
+                        purple_1 = "#a9a1e1",
+                        purple_2 = "#c2bdea",
                 },
                 -- enable or disable highlighting for extra plugins
                 plugins = {
@@ -143,57 +186,6 @@ local config = {
 
         -- Configure plugins
         plugins = {
-                heirline = function(config)
-                        -- the first element of the default configuration table is the statusline
-                        config[1] = {
-                                -- set the fg/bg of the statusline
-                                hl = { bg = "#000000", fg = "#000000" },
-                                -- when adding the mode component, enable the mode text with padding to the left/right of it
-                                astronvim.status.component.mode { mode_text = { padding = { left = 1, right = 1 } } },
-                                -- add all the other components for the statusline
-                                astronvim.status.component.git_branch(),
-                                astronvim.status.component.file_info(),
-                                astronvim.status.component.git_diff(),
-                                astronvim.status.component.diagnostics(),
-                                astronvim.status.component.fill(),
-                                astronvim.status.component.macro_recording(),
-                                astronvim.status.component.fill(),
-                                astronvim.status.component.lsp(),
-                                astronvim.status.component.treesitter(),
-                                astronvim.status.component.nav(),
-                        }
-                        -- winbar
-                        config[2] = {
-                                fallthrough = false,
-                                -- if the current buffer matches the following buftype or filetype, disable the winbar
-                                {
-                                        condition = function()
-                                                return astronvim.status.condition.buffer_matches {
-                                                        buftype = { "terminal", "prompt", "nofile", "help", "quickfix" },
-                                                        filetype = { "NvimTree", "neo-tree", "dashboard", "Outline",
-                                                                "aerial" },
-                                                }
-                                        end,
-                                        init = function() vim.opt_local.winbar = nil end,
-                                },
-                                -- if the window is currently active, show the breadcrumbs
-                                {
-                                        condition = astronvim.status.condition.is_active,
-                                        astronvim.status.component.breadcrumbs { hl = { fg = "#000000",
-                                                bg = "#000000" } },
-                                },
-                                -- if the window is not currently active, show the file information
-                                {
-                                        astronvim.status.component.file_info {
-                                                file_icon = { hl = false },
-                                                hl = { fg = "#000000", bg = "#000000" },
-                                                surround = false,
-                                        },
-                                },
-                        }
-
-                        return config
-                end,
 
                 ["neo-tree"] = {
                         filesystem = {
@@ -218,24 +210,9 @@ local config = {
 
                 init = {
                         { "Mofiqul/dracula.nvim" },
+                        { "navarasu/onedark.nvim" },
                         { "ThePrimeagen/vim-be-good" },
-                        {
-                                "xiyaowong/nvim-transparent",
-                                config = function()
-                                        require("transparent").setup {
-                                                -- enable = true, -- boolean: enable transparent
-                                                -- extra_groups = { -- table/string: additional groups that should be cleared
-                                                --         "BufferLineTabClose",
-                                                --         "BufferlineBufferSelected",
-                                                --         "BufferLineFill",
-                                                --         "BufferLineBackground",
-                                                --         "BufferLineSeparator",
-                                                --         "BufferLineIndicatorSelected",
-                                                -- },
-                                                -- exclude = {}, -- table: groups you don't want to clear
-                                        }
-                                end,
-                        },
+                        { "catppuccin/nvim", as = "catppuccin" },
                         { "RyanMillerC/better-vim-tmux-resizer" },
                         ["hrsh7th/nvim-cmp"] = { keys = { ":", "/", "?" } },
                         ["hrsh7th/cmp-cmdline"] = { after = "nvim-cmp" },
@@ -337,6 +314,47 @@ local config = {
                         command = "source <afile> | PackerSync",
                 })
 
+                local dracula = require "dracula"
+                dracula.setup {
+                        -- customize dracula color palette
+                        colors = {
+                                bg = "#000000",
+                                fg = "#F8F8F2",
+                                comment = "#6272A4",
+                                red = "#FF5555",
+                                orange = "#FFB86C",
+                                yellow = "#F1FA8C",
+                                green = "#50fa7b",
+                                purple = "#BD93F9",
+                                cyan = "#8BE9FD",
+                                pink = "#FF79C6",
+                                bright_red = "#FF6E6E",
+                                bright_green = "#69FF94",
+                                bright_yellow = "#FFFFA5",
+                                bright_blue = "#D6ACFF",
+                                bright_magenta = "#FF92DF",
+                                bright_cyan = "#A4FFFF",
+                                bright_white = "#FFFFFF",
+                                menu = "#000000",
+                        },
+                        -- show the '~' characters after the end of buffers
+                        show_end_of_buffer = true, -- default false
+                        -- use transparent background
+                        transparent_bg = true, -- default false
+                        -- set custom lualine background color
+                        lualine_bg_color = "#000000", -- default nil
+                        -- set italic comment
+                        italic_comment = true, -- default false
+                        -- overrides the default highlights see `:h synIDattr`
+                        overrides = {
+                                -- Examples
+                                -- NonText = { fg = dracula.colors().white }, -- set NonText fg to white
+                                -- NvimTreeIndentMarker = { link = "NonText" }, -- link to NonText highlight
+                                -- Nothing = {} -- clear highlight of Nothing
+                        },
+                }
+
+                -- vim.cmd.colorscheme "dracula"
                 -- Set up custom filetypes
                 -- vim.filetype.add {
                 --   extension = {
@@ -349,6 +367,8 @@ local config = {
                 --     ["~/%.config/foo/.*"] = "fooscript",
                 --   },
                 -- }
+                --
+                --
         end,
 }
 
