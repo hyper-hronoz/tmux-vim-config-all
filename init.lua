@@ -181,11 +181,19 @@ local config = {
                         ["<leader>bc"] = { "<cmd>BufferLinePickClose<cr>", desc = "Pick to close" },
                         ["<leader>bj"] = { "<cmd>BufferLinePick<cr>", desc = "Pick to jump" },
                         ["<leader>bt"] = { "<cmd>BufferLineSortByTabs<cr>", desc = "Sort by tabs" },
+
+                        ["<leader>dash"] = { function() require("alpha").start() end, desc = "Alpha Dashboard" },
+
+                        ["<leader>lp"] = { "<cmd>LspStop<cr>", desc = "Stop lsp" },
+                        ["<leader>lP"] = { "<cmd>LspStart<cr>", desc = "Start lsp" },
                 },
         },
 
         -- Configure plugins
         plugins = {
+                ["mason-nvim-dap"] = {
+                        ensure_installed = { "python", "cpp" },
+                },
 
                 ["neo-tree"] = {
                         filesystem = {
