@@ -192,10 +192,22 @@ local config = {
         },
     },
 
+    require("filetype").setup({
+        overrides = {
+            extensions = {
+                kit = "html",
+            },
+        },
+    }),
+
     -- Configure plugins
     plugins = {
         ["mason-nvim-dap"] = {
             ensure_installed = { "python", "cpp" },
+        },
+
+        ["nvim-ts-autotag"] = {
+            filetypes = { "html", "xml", "kit" },
         },
 
         ["neo-tree"] = {
@@ -220,14 +232,16 @@ local config = {
         },
 
         init = {
-            {"lervag/vimtex"},
-            {"dhruvasagar/vim-table-mode"},
-            {"rbtnn/vim-game_engine"},
-            {"rbtnn/vim-mario"},
-            {"mg979/vim-visual-multi"},
-            {"Rasukarusan/nvim-select-multi-line"},
+            { "nathom/filetype.nvim" },
+            ["rcarriga/nvim-notify"] = { disable = true },
+            { "lervag/vimtex" },
+            { "dhruvasagar/vim-table-mode" },
+            { "rbtnn/vim-game_engine" },
+            { "rbtnn/vim-mario" },
+            { "mg979/vim-visual-multi" },
+            { "Rasukarusan/nvim-select-multi-line" },
             { "Mofiqul/dracula.nvim" },
-            {"derektata/lorem.nvim"},
+            { "derektata/lorem.nvim" },
             { "navarasu/onedark.nvim" },
             { "ThePrimeagen/vim-be-good" },
             { "catppuccin/nvim", as = "catppuccin" },
