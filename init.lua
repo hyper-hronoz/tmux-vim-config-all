@@ -43,6 +43,8 @@ local config = {
         "╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚══════╝",
     },
 
+    -- colorscheme = "tokyonight-moon",
+
     -- Default theme configuration
     default_theme = {
         -- Modify the color palette for the default theme
@@ -192,6 +194,8 @@ local config = {
         },
     },
 
+    require('better-comment').Setup(),
+
     require("filetype").setup({
         overrides = {
             extensions = {
@@ -232,8 +236,13 @@ local config = {
         },
 
         init = {
+            {"nyoom-engineering/nyoom.nvim"},
+            {"ray-x/starry.nvim"},
+            {"folke/tokyonight.nvim"},
+            {"nvim-treesitter/playground"},
+            {"Djancyp/better-comments.nvim"},
             { "nathom/filetype.nvim" },
-            ["rcarriga/nvim-notify"] = { disable = true },
+            -- ["rcarriga/nvim-notify"] = { disable = true },
             { "lervag/vimtex" },
             { "dhruvasagar/vim-table-mode" },
             { "rbtnn/vim-game_engine" },

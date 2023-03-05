@@ -6,7 +6,7 @@ set -g fish_escape_delay_ms 10
 
 if status is-interactive
 and not set -q TMUX
-    exec tmux
+    exec tmux -2
 end
 
 ## my aliases
@@ -171,5 +171,5 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
 ## Run fastfetch if session is interactive
 #if status --is-interactive && type -q fastfetch
-#   fastfetch --load-config neofetch
+#   fastfetch --load-config dr460nized
 #end
