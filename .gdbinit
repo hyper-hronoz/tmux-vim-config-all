@@ -2,7 +2,7 @@ set history save on
 set history size 1000
 
 set trace-commands on
-# set logging on
+set logging overwrite on
 # show logging
 
 define reconnect
@@ -24,3 +24,4 @@ end
 define lb
   source breakpoints
 end
+
